@@ -35,14 +35,16 @@ class DocumentationBuilder:
 
         for entry in os.scandir(directory_path):
             if entry.is_file() and entry.name == "Package.swift":
-                package_swift_path = entry.path
+                package_swift_path = os.path.dirname(entry.path)
+                print(f'Found Package, commencing Package Documentation build for directory: {package_swift_path}')
             elif entry.is_dir() and entry.name.endswith(".xcodeproj"):
                 xcodeproj_path = entry.path
+                print(f'Found xcodeproj, commencing Documentation build for directory: {xcodeproj_path}')
 
         if xcodeproj_path is not None:
             return DocumentationBuilder.__build_xcodeproj_documentation_archive(xcodeproj_path, target_name, scheme_name)
         elif package_swift_path is not None:
-            return DocumentationBuilder.__build_package_documentation_archive(directory_path, target_name)
+            return DocumentationBuilder.__build_package_documentation_archive(package_swift_path, target_name)
         else:
             print("Error: No valid .xcodeproj or Package.swift file found in the specified directory.")
             return None
@@ -60,7 +62,7 @@ class DocumentationBuilder:
             Optional[str]: The .doccarchive file path, or None if an error occurred.
         """
         # Create the 'docs' directory
-        output_dir = "{package_file_path}/docs"
+        output_dir = f'{package_file_path}/docs'
         os.makedirs(output_dir, exist_ok=True)
 
         try:
@@ -79,16 +81,14 @@ class DocumentationBuilder:
                     output_dir,
                     "--transform-for-static-hosting",
                     "--hosting-base-path",
-                    package_name,
+                    package_name
                 ],
                 check=True,
+                cwd=package_file_path
             )
 
         except subprocess.CalledProcessError as e:
             print(f"Error building documentation: {e}")
-            print(
-                "Please check that this DocC library is installed in order to create Swift Package Documentation: https://github.com/apple/swift-docc-plugin"
-            )
             return None
 
         docc_archive_path = (

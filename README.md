@@ -10,6 +10,10 @@ This library helps sync the README.md, Changelog.md, and .doccarchive files for 
 ## Requirements
 Python 3.5 or greater
 
+If building documentation for a Swift Package or Framework, you must make sure this library is added as a dependency.
+
+[Apple DocC Plugin](https://github.com/apple/swift-docc-plugin)
+
 ## Dependencies
 - pathlib: introduced in Python 3.4
 - typing: introduced in Python 3.5
