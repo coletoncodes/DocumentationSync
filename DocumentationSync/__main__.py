@@ -6,11 +6,12 @@ from ConfluenceUploader.confluence_uploader import ConfluenceUploader
 from DocumentationBuilder.documentation_builder import DocumentationBuilder
 
 # TODO: User should specify framework type in init.
-def main(repo_file_path: str, project_name: str):
+def main(repo_file_path: str, project_name: str, scheme_name: str):
     print(f'Step 1: Building DocC Archive')
     docc_archive = DocumentationBuilder.build_documentation(
         repo_file_path,
-        project_name
+        project_name,
+        scheme_name
     )
 
     # print(
@@ -44,9 +45,10 @@ def main(repo_file_path: str, project_name: str):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python3 DocumentationSync <repository_url> <project_name>")
+        print("Usage: python3 DocumentationSync <repository_url> <project_name> <scheme_name>")
         sys.exit(1)
 
     repo_file_path = sys.argv[1]
     project_name = sys.argv[2]
-    main(repo_file_path, project_name)
+    scheme_name = sys.argv[3]
+    main(repo_file_path, project_name, scheme_name)

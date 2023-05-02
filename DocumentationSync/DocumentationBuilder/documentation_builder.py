@@ -17,7 +17,7 @@ class DocumentationBuilder:
     """
 
     @staticmethod
-    def build_documentation(directory_path: str, target_name: str) -> Optional[str]:
+    def build_documentation(directory_path: str, target_name: str, scheme_name: str) -> Optional[str]:
         """
         Determines the build route to use based on the files in the directory and builds the documentation archive.
         Currently only supports a single .xcodeproj or Package.swift.
@@ -25,6 +25,7 @@ class DocumentationBuilder:
         Args:
             directory_path (str): The directory path containing the Swift package or Xcode project.
             target_name (str): The name of the target to build documentation for.
+            scheme_name (str): The name of the scheme to build during documentation creation.
         
         Returns:
             Optional[str]: The .doccarchive file path, or None if an error occurred.
@@ -39,7 +40,7 @@ class DocumentationBuilder:
                 xcodeproj_path = entry.path
 
         if xcodeproj_path is not None:
-            return DocumentationBuilder.__build_xcodeproj_documentation_archive(xcodeproj_path, target_name)
+            return DocumentationBuilder.__build_xcodeproj_documentation_archive(xcodeproj_path, target_name, scheme_name)
         elif package_swift_path is not None:
             return DocumentationBuilder.__build_package_documentation_archive(directory_path, target_name)
         else:
@@ -69,13 +70,13 @@ class DocumentationBuilder:
                     "swift",
                     "package",
                     "--allow-writing-to-directory",
-                    "./docs",
+                    output_dir,
                     "generate-documentation",
                     "--target",
                     package_name,
                     "--disable-indexing",
                     "--output-path",
-                    "./docs",
+                    output_dir,
                     "--transform-for-static-hosting",
                     "--hosting-base-path",
                     package_name,
@@ -107,13 +108,14 @@ class DocumentationBuilder:
         return docc_archive_path
 
     
-    def __build_xcodeproj_documentation_archive(xcodeproj_file_path: str, scheme_name: str) -> Optional[str]:
+    def __build_xcodeproj_documentation_archive(xcodeproj_file_path: str, project_name: str, scheme_name: str) -> Optional[str]:
         """
         Builds an Xcode project documentation archive using the xcodebuild command.
         
         Args:
             xcodeproj_file_path (str): The file path of the Xcode project.
-            scheme_name (str): The name of the scheme to build documentation for.
+            project_name (str): The name of the project. Will be used to find the project_name.doccarchive
+            scheme_name: (str): The name of the scheme to build documentation for
         
         Returns:
             Optional[str]: The .doccarchive file path, or None if an error occurred.
@@ -149,9 +151,8 @@ class DocumentationBuilder:
             / "Build"
             / "Products"
             / "Debug-iphoneos"
-            / f"{scheme_name}.doccarchive"
+            / f"{project_name}.doccarchive"
         )
-
 
 
         # Check if the .doccarchive file exists
