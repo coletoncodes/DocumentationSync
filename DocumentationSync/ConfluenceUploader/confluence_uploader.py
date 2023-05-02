@@ -1,7 +1,7 @@
 import json
 import requests
 from requests.auth import HTTPBasicAuth
-from config import Config
+from .config import Config
 from utility import Utility
 
 

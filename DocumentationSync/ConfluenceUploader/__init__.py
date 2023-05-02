@@ -1,6 +1,6 @@
 # __init__.py
 from requests.auth import HTTPBasicAuth
-from config import Config
+from ConfluenceUploader.config import Config
 
 # Initialize this class with the Config values.
 # def __init__(self):

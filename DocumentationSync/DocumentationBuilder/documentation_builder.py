@@ -58,16 +58,28 @@ class DocumentationBuilder:
         Returns:
             Optional[str]: The .doccarchive file path, or None if an error occurred.
         """
+        # Create the 'docs' directory
+        output_dir = "{package_file_path}/docs"
+        os.makedirs(output_dir, exist_ok=True)
+
         try:
+            # Execute the swift package command with the given arguments
             subprocess.run(
                 [
                     "swift",
                     "package",
+                    "--allow-writing-to-directory",
+                    "./docs",
                     "generate-documentation",
                     "--target",
                     package_name,
+                    "--disable-indexing",
+                    "--output-path",
+                    "./docs",
+                    "--transform-for-static-hosting",
+                    "--hosting-base-path",
+                    package_name,
                 ],
-                cwd=package_file_path,
                 check=True,
             )
 
@@ -106,6 +118,12 @@ class DocumentationBuilder:
         Returns:
             Optional[str]: The .doccarchive file path, or None if an error occurred.
         """
+
+        # Create the 'docs' directory
+        output_dir = f'{xcodeproj_file_path}/docs'
+        os.makedirs(output_dir, exist_ok=True)  
+
+        # Execute the xcodebuild command with the docbuild action and output path
         try:
             subprocess.run(
                 [
@@ -115,6 +133,8 @@ class DocumentationBuilder:
                     "-scheme",
                     scheme_name,
                     "docbuild",
+                    "-derivedDataPath",
+                    output_dir
                 ],
                 check=True,
             )
@@ -123,19 +143,24 @@ class DocumentationBuilder:
             print(f"Error building documentation: {e}")
             return None
 
+        # Define the path to the .doccarchive file
         docc_archive_path = (
-            Path(xcodeproj_file_path).parent
-            / "DerivedData"
-            / scheme_name
+            Path(output_dir)
             / "Build"
             / "Products"
-            / "docc"
+            / "Debug-iphoneos"
             / f"{scheme_name}.doccarchive"
         )
 
-        if not docc_archive_path.exists():
+
+
+        # Check if the .doccarchive file exists
+        if docc_archive_path.exists():
+            print(f"Documentation archive found at: {docc_archive_path}")
+        else:
             print("Error: .doccarchive file not found")
             return None
+
 
         print("Finished building DocC Archive!")
         return docc_archive_path

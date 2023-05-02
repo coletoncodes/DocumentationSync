@@ -17,7 +17,16 @@ Python 3.5 or greater
 - markdown: version 3.0.0 or higher should work with Python 3.5.
 
 ## Installation
-If applicable, provide instructions on how to install the library if it's not a SPM, including any necessary steps to set up the environment.
+1. Create an API Key
+[Manage Confluence API Keys](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
+
+2. Determine SpaceID for the space to update via Space Admin.
+
+3. Install any dependencies using 
+```pip install <dependency>```
+
+4. CD to directory where script is located and use:
+```python3 <repo_file_path> <repo_name>```
 
 ## External Tools
 This library requires some setup from Confluence and should be configured in the ConfluenceUploader/config.py. 
@@ -41,8 +50,6 @@ Found in URL of page.
 
 Example: your-base-url/wiki/spaces/Space_name/pages/Changelog_Page_ID/Page_Name
 - CONFLUENCE_CHANGELOG_PAGE_ID = 'changelog-id'
-
-[Manage Confluence API Keys](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
 
 ## Third-Party Frameworks
 [Pathlib](https://docs.python.org/3/library/pathlib.html)
