@@ -5,7 +5,7 @@ from ConfluenceUploader.config import Config
 from ConfluenceUploader.confluence_uploader import ConfluenceUploader
 from DocumentationBuilder.documentation_builder import DocumentationBuilder
 
-# TODO: User should specify framework type in init.
+
 def main(repo_file_path: str, project_name: str, scheme_name: str):
     print(f'Step 1: Building DocC Archive')
     docc_archive = DocumentationBuilder.build_documentation(
@@ -13,6 +13,12 @@ def main(repo_file_path: str, project_name: str, scheme_name: str):
         project_name,
         scheme_name
     )
+
+    # The following code is commented out and may be implemented in the future:
+    # - Searching for CHANGELOG and README files in the repository
+    # - Uploading README to the Library Parent Page
+    # - (Potentially removed) Zipping the DocC Archive and uploading it to the Library Parent Page
+    # - Uploading CHANGELOG to the Library CHANGELOG Page
 
     # print(
     #     f"Step 2: Searching for CHANGELOG and README file's in repo file path: {repo_file_path}")
