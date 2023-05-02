@@ -5,7 +5,8 @@ from ConfluenceUploader.config import Config
 from ConfluenceUploader.confluence_uploader import ConfluenceUploader
 from DocumentationBuilder.documentation_builder import DocumentationBuilder
 
-
+# TODO: Let's initialize this and prompt the user for additional information instead. 
+# We should add a setup for the different types of builds. Package, .xcodeproj, and .xcframeworks.
 def main(repo_file_path: str, project_name: str, scheme_name: str):
     print(f'Step 1: Building DocC Archive')
     docc_archive = DocumentationBuilder.build_documentation(
