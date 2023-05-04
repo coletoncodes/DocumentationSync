@@ -31,23 +31,33 @@ If building documentation for a Swift Package or Framework, you must make sure [
 This library requires some setup from Confluence and should be configured in the ConfluenceUploader/config.py.
 
 ```
-Example: 'https://yoursite.net/wiki/api/v2'
+# Example: 'https://yoursite.net/wiki/api/v2'
 CONFLUENCE_BASE_URL = 'your-base-url'
 ```
 
 ```
-Example: 'cgorecke@firstorion.com'
+# Example: 'cgorecke@firstorion.com'
 CONFLUENCE_EMAIL = 'your-email'
 ```
 
 ```
-Example: 'ATATT....'
+# Example: 'ATATT....'
 CONFLUENCE_API_KEY = 'your-api-key'
 ```
 
 ```
-Example: This is the mobile eng space id: '800260186'.
+# Example: This is the mobile eng space id: '800260186'.
 CONFLUENCE_SPACE_KEY = 'confluence-space-key'
+```
+
+```
+# Example: your-base-url/wiki/spaces/Space_name/pages/parent-page-id/Page_Name
+CONFLUENCE_PARENT_PAGE_ID = 'parent-page-id'
+```
+
+```
+# Example: your-base-url/wiki/spaces/Space_name/pages/changelog-id/Page_Name
+CONFLUENCE_CHANGELOG_PAGE_ID = 'changelog-id'
 ```
 
 ## General Usage
