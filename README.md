@@ -50,7 +50,7 @@ Example: This is the mobile eng space id: '800260186'.
 CONFLUENCE_SPACE_KEY = 'confluence-space-key'
 ```
 
-## Supported Documentation Types
+## General Usage
 To build and sync documentation, use the following examples depending on the `doc_type`:
 
 In general, you can use the script like so:
@@ -65,6 +65,11 @@ However, when building a xcodeproj you must also specify the --scheme_name like 
 python3 DocumentationSync.py doc_type repo_file_path project_name --scheme_name MyScheme
 ```
 
+## Supported Documentation Types
+This library currently supports building a single DocumentationArchive for either:
+- Package
+- xcodeproj
+- xcframework
 
 ### Swift Package:
 ```bash
