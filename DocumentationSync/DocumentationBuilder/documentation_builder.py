@@ -18,19 +18,19 @@ class DocumentationBuilder:
 
     @staticmethod
     def build_documentation_archive(
-        repo_path: str, 
-        doc_type: str, 
-        target_name: str, 
+        file_path: str,
+        doc_type: str,
+        target_name: str,
         scheme_name: Optional[str] = None
-        ) -> Optional[str]:
+    ) -> Optional[str]:
         """
-        Determines the build route to use based on the documentation type and builds the documentation archive.
+        Builds the documentation archive based on the documentation type.
         Supports Package.swift, .xcodeproj, or .xcframework.
 
         For Packages and .xcframeworks make sure this [Apple DocC Library](https://github.com/apple/swift-docc-plugin) is installed.
 
         Args:
-            repo_path (str): The path to the repository containing the Swift package, Xcode project, or XCFramework.
+            file_path (str): The specific file path of the Swift package, Xcode project, or XCFramework.
             doc_type (str): The type of documentation to build, either "Package", "xcodeproj", or "xcframework".
             target_name (str): The name of the target to build documentation for.
             scheme_name (Optional[str]): The name of the scheme to build during documentation creation. Required for .xcodeproj type.
@@ -40,67 +40,37 @@ class DocumentationBuilder:
         """
 
         # Create output directory
-        output_dir = DocumentationBuilder.__create_docs_directory(repo_path)
+        output_dir = DocumentationBuilder.__create_docs_directory(file_path)
 
         # Build documentation based on doc_type
         if doc_type == "Package":
-            package_swift_path = DocumentationBuilder.__find_package_path(
-                repo_path)
-            if package_swift_path:
-                return DocumentationBuilder.__build_package_documentation_archive(
-                    package_swift_path,
-                    target_name,
-                    output_dir
-                    )
-        elif doc_type == "xcodeproj":
-            xcodeproj_path = DocumentationBuilder.__find_xcodeproj_path(
-                repo_path,
+            return DocumentationBuilder.__build_package_documentation_archive(
+                file_path,
+                target_name,
                 output_dir
-                )
-            if xcodeproj_path and scheme_name:
+            )
+        elif doc_type == "xcodeproj":
+            if scheme_name:
                 return DocumentationBuilder.__build_xcodeproj_documentation_archive(
-                    xcodeproj_path,
-                    target_name, 
+                    file_path,
+                    target_name,
                     scheme_name,
                     output_dir
-                    )
-        elif doc_type == "xcframework":
-            xcframework_path = DocumentationBuilder.__find_xcframework_path(
-                repo_path,
-                output_dir
                 )
-            if xcframework_path:
-                return DocumentationBuilder.__build_xcframework_documentation_archive(
-                    xcframework_path,
-                    target_name,
-                    output_dir
-                    )
+            else:
+                print("Error: scheme_name is required for xcodeproj documentation type.")
+                return None
+        elif doc_type == "xcframework":
+            return DocumentationBuilder.__build_xcframework_documentation_archive(
+                file_path,
+                target_name,
+                output_dir
+            )
         else:
             supported_doc_types = ["Package", "xcodeproj", "xcframework"]
-            print(f"Error: Invalid documentation type specified. Supported types are: {', '.join(supported_doc_types)}")
+            print(
+                f"Error: Invalid documentation type specified. Supported types are: {', '.join(supported_doc_types)}")
             return None
-
-    @staticmethod
-    def __find_package_path(directory_path: str) -> Optional[str]:
-        for entry in os.scandir(directory_path):
-            if entry.is_file() and entry.name == "Package.swift":
-                return os.path.dirname(entry.path)
-        return None
-    
-    @staticmethod
-    def __find_path_with_extension(directory_path: str, extension: str) -> Optional[str]:
-        for entry in os.scandir(directory_path):
-            if entry.is_dir() and entry.name.endswith(extension):
-                return entry.path
-        return None
-
-    @staticmethod
-    def __find_xcodeproj_path(directory_path: str) -> Optional[str]:
-        return DocumentationBuilder.__find_path_with_extension(directory_path, ".xcodeproj")
-
-    @staticmethod
-    def __find_xcframework_path(directory_path: str) -> Optional[str]:
-        return DocumentationBuilder.__find_path_with_extension(directory_path, ".xcframework")
 
     @staticmethod
     def __create_docs_directory(base_path: str) -> str:
@@ -109,10 +79,10 @@ class DocumentationBuilder:
         return output_dir
 
     def __build_package_documentation_archive(
-        package_file_path: str, 
-        package_name: str, 
+        package_file_path: str,
+        package_name: str,
         output_dir: str
-        ) -> Optional[str]:
+    ) -> Optional[str]:
         """
 
         Args:
@@ -167,11 +137,11 @@ class DocumentationBuilder:
         return docc_archive_path
 
     def __build_xcodeproj_documentation_archive(
-        xcodeproj_file_path: str, 
-        project_name: str, 
-        scheme_name: str, 
+        xcodeproj_file_path: str,
+        project_name: str,
+        scheme_name: str,
         output_dir: str
-        ) -> Optional[str]:
+    ) -> Optional[str]:
         """
         Builds an Xcode project documentation archive using the xcodebuild command.
 
@@ -223,14 +193,13 @@ class DocumentationBuilder:
 
         print("Finished building DocC Archive!")
         return docc_archive_path
-    
 
     @staticmethod
     def __build_xcframework_documentation_archive(
-        xcframework_file_path: str, 
-        framework_name: str, 
+        xcframework_file_path: str,
+        framework_name: str,
         output_dir: str
-        ) -> Optional[str]:
+    ) -> Optional[str]:
         """
         Builds an .xcframework documentation archive using the Apple-DocC plugin.
 

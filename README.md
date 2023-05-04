@@ -73,21 +73,24 @@ This library currently supports building a single DocumentationArchive for eithe
 
 ### Swift Package:
 ```bash
-python3 DocumentationSync.py Package /path/to/package MyPackageTarget
+python3 DocumentationSync.py Package /path/to/Package.swift MyPackageTarget
 ```
 
 ### Xcode Project:
 ```bash
-python3 DocumentationSync.py xcodeproj /path/to/xcodeproj MyProjectTarget --scheme_name MyScheme
+python3 DocumentationSync.py xcodeproj /path/to/project.xcodeproj MyProjectTarget --scheme_name MyScheme
 ```
 
 ### XCFramework:
 ```bash
-python3 DocumentationSync.py xcframework /path/to/xcframework MyFrameworkTarget
+python3 DocumentationSync.py xcframework /path/to/project.xcframework MyFrameworkTarget
 ```
 
 ## Third-Party Frameworks
 [Pathlib](https://docs.python.org/3/library/pathlib.html)
+
 [Typing](https://docs.python.org/3/library/typing.html)
+
 [Requests](https://pypi.org/project/requests/)
+
 [Markdown](https://python-markdown.github.io/)
