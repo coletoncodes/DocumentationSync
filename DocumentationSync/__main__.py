@@ -4,13 +4,15 @@ from utility import Utility
 from ConfluenceUploader.config import Config
 from ConfluenceUploader.confluence_uploader import ConfluenceUploader
 from DocumentationBuilder.documentation_builder import DocumentationBuilder
+import argparse
+from typing import Optional
 
-# TODO: Let's initialize this and prompt the user for additional information instead. 
-# We should add a setup for the different types of builds. Package, .xcodeproj, and .xcframeworks.
-def main(repo_file_path: str, project_name: str, scheme_name: str):
+
+def main(repo_file_path: str, project_name: str, doc_type: str, scheme_name: Optional[str]):
     print(f'Step 1: Building DocC Archive')
-    docc_archive = DocumentationBuilder.build_documentation(
+    docc_archive = DocumentationBuilder.build_documentation_archive(
         repo_file_path,
+        doc_type,
         project_name,
         scheme_name
     )
@@ -51,11 +53,18 @@ def main(repo_file_path: str, project_name: str, scheme_name: str):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 3:
-        print("Usage: python3 DocumentationSync <repository_url> <project_name> <scheme_name>")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Build and sync documentation for the specified project."
+    )
+    parser.add_argument("repo_file_path", help="The path to the repository.")
+    parser.add_argument("project_name", help="The name of the project.")
+    parser.add_argument("doc_type", choices=["Package", "xcodeproj", "xcframework"], help="The type of documentation to build: Package, xcodeproj, or xcframework.")
+    parser.add_argument(
+        "--scheme_name",
+        default=None,
+        help="The name of the scheme (optional, required for xcodeproj type).",
+    )
 
-    repo_file_path = sys.argv[1]
-    project_name = sys.argv[2]
-    scheme_name = sys.argv[3]
-    main(repo_file_path, project_name, scheme_name)
+    args = parser.parse_args()
+
+    main(args.repo_file_path, args.project_name, args.doc_type, args.scheme_name)

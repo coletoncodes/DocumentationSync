@@ -8,7 +8,7 @@ A Python package for building DocC Documentation archive files for Swift Package
 ## Installation
 
 ```python
-from documentation_builder import DocumentationBuilder
+from DocumentationBuilder.documentation_builder import DocumentationBuilder
 ```
 
 ## Example usage:

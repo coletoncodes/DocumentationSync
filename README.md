@@ -1,11 +1,12 @@
 # DocumentationSync
-A python library that uploads internal library documentation to confluence.
+
+A Python library that builds DocC Documentation archive files for Swift Packages, Xcode projects, or XCFrameworks, and uploads internal library documentation to Confluence.
 
 ## Tech Lead/Owner
 Coleton Gorecke, cgorecke@firstorion.com
 
 ## Purpose
-This library helps sync the README.md, Changelog.md, and .doccarchive files for internal libraries with their respective page in Confluence. 
+This library helps sync the README.md, Changelog.md, and .doccarchive files for internal libraries with their respective page in Confluence.
 
 ## Requirements
 Python 3.5 or greater
@@ -21,19 +22,13 @@ If building documentation for a Swift Package or Framework, you must make sure [
 ## Installation
 1. Create an API Key
 [Manage Confluence API Keys](https://support.atlassian.com/atlassian-account/docs/manage-api-tokens-for-your-atlassian-account/)
-
 2. Determine SpaceID for the space to update via Space Admin.
-
-3. Install any dependencies using 
-
+3. Install any dependencies using:
 ```pip install <dependency>```
-
-4. CD to directory where script is located and use:
-
+4. CD to the directory where the script is located and use:
 ```python3 <repo_file_path> <repo_name>```
 
-## External Tools
-This library requires some setup from Confluence and should be configured in the ConfluenceUploader/config.py. 
+This library requires some setup from Confluence and should be configured in the ConfluenceUploader/config.py.
 
 ```
 Example: 'https://yoursite.net/wiki/api/v2'
@@ -51,25 +46,30 @@ CONFLUENCE_API_KEY = 'your-api-key'
 ```
 
 ```
-Example: This is the mobile eng space id: '800260186'. 
+Example: This is the mobile eng space id: '800260186'.
 CONFLUENCE_SPACE_KEY = 'confluence-space-key'
 ```
 
-```
-Found in URL of page. Example: your-base-url/wiki/spaces/Space_name/pages/Parent_Page_ID/Page_Name 
-CONFLUENCE_PARENT_PAGE_ID = 'parent-page-id'
+## Supported Documentation Types
+To build and sync documentation, use the following examples depending on the `doc_type`:
+
+### Swift Package:
+```bash
+python3 DocumentationSync.py /path/to/package MyPackageTarget Package
 ```
 
+### Xcode Project:
+```bash
+python3 DocumentationSync.py /path/to/xcodeproj MyProjectTarget xcodeproj --scheme_name MyScheme
 ```
-Example: your-base-url/wiki/spaces/Space_name/pages/Changelog_Page_ID/Page_Name
-CONFLUENCE_CHANGELOG_PAGE_ID = 'changelog-id'
+
+### XCFramework:
+```bash
+python3 DocumentationSync.py /path/to/xcframework MyFrameworkTarget xcframework
 ```
 
 ## Third-Party Frameworks
 [Pathlib](https://docs.python.org/3/library/pathlib.html)
-
 [Typing](https://docs.python.org/3/library/typing.html)
-
 [Requests](https://pypi.org/project/requests/)
-
 [Markdown](https://python-markdown.github.io/)
