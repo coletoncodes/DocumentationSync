@@ -8,7 +8,7 @@ import argparse
 from typing import Optional
 
 
-def main(repo_file_path: str, project_name: str, doc_type: str, scheme_name: Optional[str]):
+def main(doc_type: str, repo_file_path: str, project_name: str, scheme_name: Optional[str]):
     print(f'Step 1: Building DocC Archive')
     docc_archive = DocumentationBuilder.build_documentation_archive(
         repo_file_path,

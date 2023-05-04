@@ -53,19 +53,32 @@ CONFLUENCE_SPACE_KEY = 'confluence-space-key'
 ## Supported Documentation Types
 To build and sync documentation, use the following examples depending on the `doc_type`:
 
+In general, you can use the script like so:
+
+```bash
+python3 DocumentationSync.py doc_type repo_file_path project_name
+```
+
+However, when building a xcodeproj you must also specify the --scheme_name like so: 
+
+```bash
+python3 DocumentationSync.py doc_type repo_file_path project_name --scheme_name MyScheme
+```
+
+
 ### Swift Package:
 ```bash
-python3 DocumentationSync.py /path/to/package MyPackageTarget Package
+python3 DocumentationSync.py Package /path/to/package MyPackageTarget
 ```
 
 ### Xcode Project:
 ```bash
-python3 DocumentationSync.py /path/to/xcodeproj MyProjectTarget xcodeproj --scheme_name MyScheme
+python3 DocumentationSync.py xcodeproj /path/to/xcodeproj MyProjectTarget --scheme_name MyScheme
 ```
 
 ### XCFramework:
 ```bash
-python3 DocumentationSync.py /path/to/xcframework MyFrameworkTarget xcframework
+python3 DocumentationSync.py xcframework /path/to/xcframework MyFrameworkTarget
 ```
 
 ## Third-Party Frameworks
